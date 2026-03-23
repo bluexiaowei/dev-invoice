@@ -1,0 +1,48 @@
+@import 'tailwindcss';
+
+@page {
+  size: A4 portrait;
+  margin: 10mm 12mm;
+}
+
+@media print {
+  html {
+    background: white !important;
+  }
+
+  body {
+    background: white !important;
+    margin: 0 !important;
+    /* 不强制打印背景色，避免表头等出现灰色底 */
+    -webkit-print-color-adjust: economy;
+    print-color-adjust: economy;
+  }
+
+  #root {
+    max-width: none !important;
+    margin: 0 !important;
+    border: none !important;
+    min-height: auto !important;
+  }
+
+  .invoice-print-root {
+    box-shadow: none !important;
+    max-width: 100% !important;
+    border-radius: 0 !important;
+    border: none !important;
+  }
+
+  .invoice-print-table {
+    width: 100%;
+  }
+
+  .invoice-print-table thead {
+    display: table-header-group;
+  }
+
+  .invoice-print-table tbody tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+}
