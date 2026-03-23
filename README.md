@@ -1,73 +1,91 @@
-# React + TypeScript + Vite
+# invoice
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-Currently, two official plugins are available:
+A **client-side invoice** web app: fill in billing details, preview in real time, and export a **PDF** via the browser print dialog (**Save as PDF**). No backend; data stays in your browser unless you export.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+**中文说明** → [README.zh-CN.md](./README.zh-CN.md)
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Form + live preview (issuer, client, invoice no., dates, currency, tax, line items, terms, notes)
+- **English / 中文** UI toggle (single language at a time)
+- **Print to PDF** using `window.print()` and A4-oriented styles
+- **Local draft** storage (`localStorage`, auto-save with debounce; manual save / load / new invoice)
+- Tailwind CSS for layout and print tweaks
 
-## Expanding the ESLint configuration
+## Tech stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+| Layer    | Choice                          |
+| -------- | ------------------------------- |
+| Build    | Vite 8, TypeScript              |
+| UI       | React 19, Tailwind CSS 4        |
+| Data     | Browser `localStorage` only     |
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Prerequisites
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- [Node.js](https://nodejs.org/) 20+ (LTS recommended)
+- npm (or pnpm / yarn)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Getting started
+
+```bash
+git clone https://github.com/<your-org>/invoice.git
+cd invoice
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Open the URL shown in the terminal (usually `http://localhost:5173`).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Scripts
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+| Command         | Description                    |
+| --------------- | ------------------------------ |
+| `npm run dev`   | Start dev server with HMR      |
+| `npm run build` | Typecheck + production build → `dist/` |
+| `npm run preview` | Preview production build locally |
+| `npm run lint`  | Run ESLint                     |
+
+## Exporting PDF
+
+1. Complete the form and check the preview.
+2. Click **Print / Save as PDF** (or press `Ctrl+P` / `Cmd+P`).
+3. Choose **Save as PDF** / **Microsoft Print to PDF** as the destination.
+4. Adjust margins or scale in the print dialog if needed.
+
+## Local storage keys
+
+| Key                  | Purpose                                      |
+| -------------------- | -------------------------------------------- |
+| `invoice-stash-v2`   | Draft payload `{ savedAt, state }`           |
+| `invoice-locale-v1`  | UI locale `zh` or `en`                       |
+
+Legacy `invoice-form-v1` is migrated once to `invoice-stash-v2` and then removed.
+
+**Privacy:** Data never leaves your machine unless you print/save PDF or copy it yourself. Clearing site data removes drafts.
+
+## Project layout
+
 ```
+src/
+  App.tsx
+  components/InvoiceForm.tsx
+  components/InvoicePreview.tsx
+  i18n/copy.ts
+  i18n/locale.ts
+  types/invoice.ts
+  index.css
+```
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+## Security
+
+See [SECURITY.md](./SECURITY.md).
+
+## License
+
+[MIT](./LICENSE)
