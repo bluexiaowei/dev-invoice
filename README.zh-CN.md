@@ -31,6 +31,18 @@ npm run dev
 
 浏览器访问终端提示的本地地址（一般为 `http://localhost:5173`）。
 
+## GitHub Pages
+
+仓库已包含 [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml)：在 `main` / `master` 推送时自动构建并部署到 GitHub Pages，Vite 会按仓库名设置正确的 `base` 路径。
+
+**首次启用**
+
+1. 仓库 **Settings** → **Pages** → **Build and deployment** → **Source** 选 **GitHub Actions**。
+2. 推送 `main` 或在 **Actions** 里手动运行工作流。
+3. 部署完成后访问：`https://<用户名>.github.io/<仓库名>/`（例如 `acme/invoice` → `https://acme.github.io/invoice/`）。
+
+若仓库名为 `<用户>.github.io`（用户/组织站根域名），构建会自动使用 `base: "/"`。若需自定义，可在工作流的 Build 步骤里设置环境变量 `VITE_BASE_URL`。
+
 ```bash
 npm run build    # 生产构建，输出 dist/
 npm run preview  # 本地预览构建结果

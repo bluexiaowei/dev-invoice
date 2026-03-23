@@ -38,6 +38,22 @@ npm run dev
 
 Open the URL shown in the terminal (usually `http://localhost:5173`).
 
+## GitHub Pages
+
+This repo includes a workflow ([`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml)) that builds with the correct Vite [`base`](https://vite.dev/config/shared-options.html#base) and deploys to **GitHub Pages** on every push to `main` or `master`.
+
+**One-time setup**
+
+1. Repo → **Settings** → **Pages** → **Build and deployment** → **Source**: **GitHub Actions**.
+2. Push to `main` (or run the workflow manually under **Actions**).
+3. After the deploy job finishes, open the site at:
+
+   `https://<your-username>.github.io/<repo-name>/`
+
+   Example: repo `acme/invoice` → `https://acme.github.io/invoice/`.
+
+If the repository is a **user/org site** (`<user>.github.io`), `vite.config.ts` sets `base` to `/` automatically. If you need to override (e.g. custom path), set `VITE_BASE_URL` in the workflow `env` for the Build step.
+
 ## Scripts
 
 | Command         | Description                    |

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Open source documentation: `LICENSE` (MIT), `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, bilingual `README` / `README.zh-CN`.
+- GitHub Actions workflow to deploy to GitHub Pages; Vite `base` resolved from `GITHUB_REPOSITORY` (and `*.github.io` root repos).
 
 ## [0.1.0] - 2026-03-23
 
