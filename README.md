@@ -54,6 +54,20 @@ This repo includes a workflow ([`.github/workflows/deploy-pages.yml`](.github/wo
 
 If the repository is a **user/org site** (`<user>.github.io`), `vite.config.ts` sets `base` to `/` automatically. If you need to override (e.g. custom path), set `VITE_BASE_URL` in the workflow `env` for the Build step.
 
+### Troubleshooting: `deploy-pages` fails with `HttpError: Not Found` (404)
+
+The Pages API returns **404** until the repository is configured for **GitHub Actions** deployments:
+
+1. Open **Settings → Pages → Build and deployment**.
+2. Under **Source**, select **GitHub Actions** (not “Deploy from a branch”). Save.
+3. Re-run the failed workflow (**Actions** → workflow run → **Re-run all jobs**).
+
+Also check:
+
+- **Settings → Actions → General → Workflow permissions**: use **Read and write permissions** (or allow `GITHUB_TOKEN` to write for Pages), if your org defaults to read-only.
+- **Private repositories**: publishing GitHub Pages from a private repo may require a paid plan; use a **public** repo for free hosting, or upgrade per [GitHub Pages docs](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages).
+- **Forks**: enable Pages on the **fork** (same Source = GitHub Actions) or deploy only from the upstream default branch.
+
 ## Scripts
 
 | Command         | Description                    |

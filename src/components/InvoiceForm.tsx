@@ -1,6 +1,11 @@
 import type { Copy } from '../i18n/copy'
 import type { CurrencyCode, InvoiceFormState, LineItem } from '../types/invoice'
-import { createEmptyLineItem } from '../types/invoice'
+import {
+  autoInvoiceNumberFromDate,
+  createEmptyLineItem,
+  suggestedExportFileName,
+  syncExportFileNameAfterChange,
+} from '../types/invoice'
 
 type Props = {
   state: InvoiceFormState
@@ -66,7 +71,14 @@ export function InvoiceForm({ state, onChange, copy }: Props) {
               id="sellerName"
               className={inputClass()}
               value={state.sellerName}
-              onChange={(e) => set({ sellerName: e.target.value })}
+              onChange={(e) => {
+                const sellerName = e.target.value
+                const next = { ...state, sellerName }
+                onChange({
+                  ...next,
+                  exportFileName: syncExportFileNameAfterChange(state, next),
+                })
+              }}
               placeholder={p.sellerName}
             />
           </div>
@@ -132,18 +144,7 @@ export function InvoiceForm({ state, onChange, copy }: Props) {
           {t.invoiceInfo}
         </h3>
         <div className="grid gap-3 sm:grid-cols-2">
-          <div className="sm:col-span-2">
-            <label className={labelClass()} htmlFor="invoiceNumber">
-              {t.invoiceNo}
-            </label>
-            <input
-              id="invoiceNumber"
-              className={inputClass()}
-              value={state.invoiceNumber}
-              onChange={(e) => set({ invoiceNumber: e.target.value })}
-              placeholder={p.invoiceNo}
-            />
-          </div>
+         
           <div>
             <label className={labelClass()} htmlFor="invoiceDate">
               {t.date}
@@ -153,7 +154,31 @@ export function InvoiceForm({ state, onChange, copy }: Props) {
               type="date"
               className={inputClass()}
               value={state.invoiceDate}
-              onChange={(e) => set({ invoiceDate: e.target.value })}
+              onChange={(e) => {
+                const newDate = e.target.value
+                const oldDate = state.invoiceDate
+                const oldAuto = oldDate
+                  ? autoInvoiceNumberFromDate(oldDate)
+                  : ''
+                const newAuto = newDate
+                  ? autoInvoiceNumberFromDate(newDate)
+                  : ''
+                const customized =
+                  state.invoiceNumber !== '' &&
+                  state.invoiceNumber !== oldAuto
+                const nextState = {
+                  ...state,
+                  invoiceDate: newDate,
+                  invoiceNumber: customized ? state.invoiceNumber : newAuto,
+                }
+                onChange({
+                  ...nextState,
+                  exportFileName: syncExportFileNameAfterChange(
+                    state,
+                    nextState,
+                  ),
+                })
+              }}
             />
           </div>
           <div>
@@ -201,6 +226,42 @@ export function InvoiceForm({ state, onChange, copy }: Props) {
               onChange={(e) =>
                 set({ taxRatePercent: Number(e.target.value) || 0 })
               }
+            />
+          </div>
+
+          <div className="sm:col-span-2">
+            <label className={labelClass()} htmlFor="invoiceNumber">
+              {t.invoiceNo}
+            </label>
+            <input
+              id="invoiceNumber"
+              className={inputClass()}
+              value={state.invoiceNumber}
+              onChange={(e) => {
+                const invoiceNumber = e.target.value
+                const next = { ...state, invoiceNumber }
+                onChange({
+                  ...next,
+                  exportFileName: syncExportFileNameAfterChange(state, next),
+                })
+              }}
+              placeholder={p.invoiceNo}
+            />
+          </div>
+          <div className="sm:col-span-2">
+            <label className={labelClass()} htmlFor="exportFileName">
+              {t.pdfFileName}
+            </label>
+            <p className="mb-1.5 text-xs leading-snug text-slate-500">
+              {t.pdfFileNameHint}
+            </p>
+            <input
+              id="exportFileName"
+              className={inputClass()}
+              value={state.exportFileName}
+              onChange={(e) => set({ exportFileName: e.target.value })}
+              placeholder={suggestedExportFileName(state)}
+              autoComplete="off"
             />
           </div>
         </div>

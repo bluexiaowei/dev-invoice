@@ -43,6 +43,20 @@ npm run dev
 
 若仓库名为 `<用户>.github.io`（用户/组织站根域名），构建会自动使用 `base: "/"`。若需自定义，可在工作流的 Build 步骤里设置环境变量 `VITE_BASE_URL`。
 
+### 故障排除：`deploy-pages` 报 `HttpError: Not Found`（404）
+
+在仓库里**尚未**把 Pages 的发布方式设为 **GitHub Actions** 时，部署接口会返回 **404**：
+
+1. 打开 **Settings → Pages → Build and deployment**。
+2. **Source** 选 **GitHub Actions**（不要选 “Deploy from a branch”），保存。
+3. 到 **Actions** 里 **Re-run** 失败的工作流。
+
+另请检查：
+
+- **Settings → Actions → General → Workflow permissions**：若组织默认只读，需允许 **Read and write**，否则 `GITHUB_TOKEN` 无法完成 Pages 部署。
+- **私有仓库**：免费账号下私有仓库发布 Pages 可能受限；可改为**公开**仓库，或参考 [GitHub Pages 说明](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages) 升级方案。
+- **Fork**：要在 **fork 仓库** 里同样启用 Pages（Source = GitHub Actions），或只在主仓库部署。
+
 ```bash
 npm run build    # 生产构建，输出 dist/
 npm run preview  # 本地预览构建结果

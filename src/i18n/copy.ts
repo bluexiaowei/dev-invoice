@@ -24,6 +24,8 @@ export type Copy = {
     address: string
     taxIdOptional: string
     invoiceNo: string
+    pdfFileName: string
+    pdfFileNameHint: string
     date: string
     dueOptional: string
     currency: string
@@ -97,6 +99,9 @@ const zh: Copy = {
     address: '地址',
     taxIdOptional: '税号（可选）',
     invoiceNo: '发票号码',
+    pdfFileName: '打印 / PDF 文件名',
+    pdfFileNameHint:
+      '另存为 PDF 时，多数浏览器会用页面标题作为默认文件名。可手动修改；与开票方、发票号一致时会随二者自动更新。',
     date: '日期',
     dueOptional: '到期日（可选）',
     currency: '币种',
@@ -170,6 +175,9 @@ const en: Copy = {
     address: 'Address',
     taxIdOptional: 'Tax ID (optional)',
     invoiceNo: 'Invoice number',
+    pdfFileName: 'Print / PDF file name',
+    pdfFileNameHint:
+      'When saving as PDF, many browsers suggest a filename from the page title. Edit here; it auto-updates with issuer and invoice number while they match.',
     date: 'Date',
     dueOptional: 'Due date (optional)',
     currency: 'Currency',

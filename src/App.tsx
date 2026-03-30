@@ -7,6 +7,7 @@ import { loadLocale, saveLocale } from './i18n/locale'
 import {
   defaultInvoiceState,
   loadStash,
+  printDocumentTitle,
   saveStash,
   type InvoiceFormState,
 } from './types/invoice'
@@ -35,6 +36,15 @@ function App() {
   useEffect(() => {
     document.documentElement.lang = locale === 'zh' ? 'zh-CN' : 'en'
   }, [locale])
+
+  useEffect(() => {
+    const applyTitle = () => {
+      document.title = printDocumentTitle(state)
+    }
+    applyTitle()
+    window.addEventListener('beforeprint', applyTitle)
+    return () => window.removeEventListener('beforeprint', applyTitle)
+  }, [state])
 
   useEffect(() => {
     saveLocale(locale)
